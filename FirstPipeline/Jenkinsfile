@@ -1,0 +1,56 @@
+Pipeline{
+        agent any
+        stages{
+            stage('one'){
+                steps{
+                    echo 'Hi, This is Mohit Form Infinte Computer Solution'
+                }
+
+            }
+            stage('Two'){
+                steps{
+                    input('do you want to proceed ?')
+                }
+
+            }
+           stage('Three'){
+               when{
+                   not{
+                       branch "master"
+                   }
+
+               }
+                    steps{
+                    echo "Hello"
+            }
+
+           }
+           stage('four'){
+               parallel{
+                   stage('Unit Test'){
+                       steps{
+                           echo "Running the Unit Test...."
+                       }
+
+                   }
+            stage('Integration Test'){
+                agent{
+                    docker{
+                        reuse node false
+                        image 'ubuntu' 
+                    }
+
+                }
+                  steps{
+                      echo "Running the Integration Test..."
+                  }
+
+            }
+
+               }
+
+           }
+
+        }
+
+}
